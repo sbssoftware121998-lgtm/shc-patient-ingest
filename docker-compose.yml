@@ -1,0 +1,69 @@
+# Local end-to-end demo with three containers:
+#   postgres  – PostgreSQL 18, published on localhost:5433 for pgAdmin (user shc, password local-demo-password, db shc)
+#   mock-api  – stand-in for the SHC API; stores patients in global_health_client_patient_data_master
+#   ingest    – the ingestion job; writes ingest_report.json and failed_records.json to ./output
+#
+# Start the database and the API (they keep running, so you can browse them in pgAdmin):
+#   docker compose up -d --wait postgres mock-api
+# Run the job with one of three commands (or the npm shortcuts: npm run docker:success, ...):
+#   docker compose run --rm --build ingest success      # load data/input/patients.csv (skipped if already loaded)
+#   docker compose run --rm --build ingest validation   # check it, write output/data_correction.csv; sends nothing
+#   docker compose run --rm --build ingest failed       # resend data/retry/failed_records.json; loaded records are removed
+# Stop everything (add -v to also delete the database):
+#   docker compose down
+
+services:
+  postgres:
+    image: postgres:18.6-alpine3.24
+    environment:
+      POSTGRES_USER: shc
+      POSTGRES_PASSWORD: local-demo-password # demo only
+      POSTGRES_DB: shc
+    ports:
+      - "5433:5432" # 5433 so it doesn't clash with a PostgreSQL already running on the host
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "shc", "-d", "shc"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+
+  mock-api:
+    build: ./mock-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      MOCK_API_TOKEN: local-demo-token
+      MOCK_FAILURE_RATE: "0.2" # inject transient 503s so retries are visible in the logs
+      DATABASE_URL: postgres://shc:local-demo-password@postgres:5432/shc
+    ports:
+      - "8080:8080" # optional: GET /v1/patients shows what was loaded
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+
+  ingest:
+    build: .
+    depends_on:
+      mock-api:
+        condition: service_healthy
+    environment:
+      SHC_API_URL: http://mock-api:8080/v1/patients
+      SHC_API_TOKEN: local-demo-token
+      SHC_ALLOW_INSECURE_HTTP: "true" # plain http is acceptable only for this local mock
+      SHC_LOG_FORMAT: ${SHC_LOG_FORMAT:-pretty} # readable output for the demo; production logs default to JSON
+    volumes:
+      - ./data/input:/app/data/input:ro # the job's one input: data/input/patients.csv
+      - ./data/retry:/app/data/retry # what "failed" resends (data/retry/failed_records.json, copied there after review); loaded records are removed from it
+      - ./output:/data/output
+    # Same hardening we recommend for production runs.
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
+volumes:
+  pgdata:

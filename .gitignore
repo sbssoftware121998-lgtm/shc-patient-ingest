@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+
+# Run outputs contain patient data
+output/*
+!output/.gitkeep
+
+# Local secrets
+.env
+.env.*
+!.env.example

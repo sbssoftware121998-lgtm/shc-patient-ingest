@@ -1,0 +1,212 @@
+[
+  {
+    "stage": "api",
+    "reason": "network_error",
+    "status_code": 500,
+    "retryable": true,
+    "patient_id": "P-3001",
+    "source_lines": [
+      2
+    ],
+    "http_status": null,
+    "detail": "ECONNREFUSED on all 6 attempts",
+    "batch": "batch 1/1",
+    "record": {
+      "patient_id": "P-3001",
+      "first_name": "Asha",
+      "last_name": "Menon",
+      "dob": "1979-03-12",
+      "email": "asha.menon@example.com",
+      "phone": "555-3001",
+      "account_balance": 120.5,
+      "last_modified": "2026-10-10T08:00:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  },
+  {
+    "stage": "api",
+    "reason": "network_error",
+    "status_code": 500,
+    "retryable": true,
+    "patient_id": "P-3002",
+    "source_lines": [
+      3
+    ],
+    "http_status": null,
+    "detail": "ECONNRESET on all 6 attempts",
+    "batch": "batch 1/1",
+    "record": {
+      "patient_id": "P-3002",
+      "first_name": "Brian",
+      "last_name": "Cole",
+      "dob": "1985-11-30",
+      "email": null,
+      "phone": "555-3002",
+      "account_balance": 0,
+      "last_modified": "2026-10-10T08:05:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  },
+  {
+    "stage": "api",
+    "reason": "api_unavailable",
+    "status_code": 503,
+    "retryable": true,
+    "patient_id": "P-3003",
+    "source_lines": [
+      4
+    ],
+    "http_status": 503,
+    "detail": "HTTP 503 on all 6 attempts",
+    "batch": "batch 1/1",
+    "record": {
+      "patient_id": "P-3003",
+      "first_name": "Chen",
+      "last_name": "Wei",
+      "dob": "1992-07-04",
+      "email": "chen.wei@example.com",
+      "phone": null,
+      "account_balance": 1250,
+      "last_modified": "2026-10-10T08:10:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  },
+  {
+    "stage": "api",
+    "reason": "api_timeout",
+    "status_code": 504,
+    "retryable": true,
+    "patient_id": "P-3004",
+    "source_lines": [
+      5
+    ],
+    "http_status": null,
+    "detail": "no response within 30000 ms on all 6 attempts",
+    "batch": "batch 1/1",
+    "record": {
+      "patient_id": "P-3004",
+      "first_name": "Divya",
+      "last_name": "Rao",
+      "dob": "1968-01-21",
+      "email": "divya.rao@example.com",
+      "phone": "555-3004",
+      "account_balance": -15,
+      "last_modified": "2026-10-10T08:15:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  },
+  {
+    "stage": "api",
+    "reason": "not_attempted",
+    "status_code": 503,
+    "retryable": true,
+    "patient_id": "P-3005",
+    "source_lines": [
+      6
+    ],
+    "http_status": null,
+    "detail": "not sent: 3 consecutive batches failed even after retries; stopping instead of retrying every remaining batch",
+    "batch": null,
+    "record": {
+      "patient_id": "P-3005",
+      "first_name": "Elena",
+      "last_name": "Petrova",
+      "dob": "2001-09-09",
+      "email": "elena.p@example.com",
+      "phone": "555-3005",
+      "account_balance": null,
+      "last_modified": "2026-10-10T08:20:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  },
+  {
+    "stage": "api",
+    "reason": "rejected_by_api",
+    "status_code": 400,
+    "retryable": false,
+    "patient_id": "TMP-0042",
+    "source_lines": [
+      7
+    ],
+    "http_status": 400,
+    "detail": {
+      "error": "validation_failed",
+      "details": [
+        {
+          "index": 0,
+          "patient_id": "TMP-0042",
+          "message": "patient_id must look like P-1234"
+        }
+      ]
+    },
+    "batch": "batch 1/1 record 6",
+    "record": {
+      "patient_id": "TMP-0042",
+      "first_name": "Temp",
+      "last_name": "Record",
+      "dob": "1980-01-01",
+      "email": "temp.record@example.com",
+      "phone": "555-0042",
+      "account_balance": 10,
+      "last_modified": "2026-10-01T00:00:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  },
+  {
+    "stage": "api",
+    "reason": "rejected_by_api",
+    "status_code": 400,
+    "retryable": false,
+    "patient_id": "GH-7781",
+    "source_lines": [
+      8
+    ],
+    "http_status": 400,
+    "detail": {
+      "error": "validation_failed",
+      "details": [
+        {
+          "index": 0,
+          "patient_id": "GH-7781",
+          "message": "patient_id must look like P-1234"
+        }
+      ]
+    },
+    "batch": "batch 1/1 record 7",
+    "record": {
+      "patient_id": "GH-7781",
+      "first_name": "Legacy",
+      "last_name": "Format",
+      "dob": "1980-01-01",
+      "email": "legacy.format@example.com",
+      "phone": "555-7781",
+      "account_balance": 10,
+      "last_modified": "2026-10-01T00:00:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  },
+  {
+    "stage": "api",
+    "reason": "api_timeout",
+    "status_code": 504,
+    "retryable": true,
+    "patient_id": "X-0099",
+    "source_lines": [
+      9
+    ],
+    "http_status": null,
+    "detail": "no response within 30000 ms on all 6 attempts",
+    "batch": "batch 1/1",
+    "record": {
+      "patient_id": "X-0099",
+      "first_name": "Old",
+      "last_name": "System",
+      "dob": "1975-05-05",
+      "email": "old.system@example.com",
+      "phone": "555-0099",
+      "account_balance": 5,
+      "last_modified": "2026-10-10T08:30:00Z"
+    },
+    "logged_at": "2026-10-14T09:15:00.000Z"
+  }
+]

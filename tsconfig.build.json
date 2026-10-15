@@ -1,0 +1,11 @@
+{
+  // Production build: compiles only the application into dist/ (imports rewritten to .js).
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "include": ["src"]
+}

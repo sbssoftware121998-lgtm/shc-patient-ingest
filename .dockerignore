@@ -1,0 +1,8 @@
+# Allow-list: the build context contains only what the image needs. Patient data, outputs,
+# .env files, tests and git history can never end up in an image layer.
+*
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.build.json
+!src
